@@ -1,0 +1,89 @@
+<!doctype html>
+<link rel="stylesheet" href="../html/myFood.css">
+<html lang="en">
+
+    <html>
+        <div id="sideMenu" class="sideMenu">
+            <a class="closeb" onclick="closeSideMenu()"><img src='../images/baseline_menu_black_48dp.png'></a>
+            <a href="MyProfile.html">My Profile</a>
+            <a href="DailySummary.html">Daily Summary</a>
+            <a href="PersonalizedPlan.html">Nutrition Plan</a>
+            <a href="MyFood.html">My Food</a>
+            <a id="logoutb" href="../index.html">log out</a>
+        </div>
+        <button id="sideMenuOpen" onclick=openSideMenu()> <img src='../images/baseline_menu_black_48dp.png'> </button>
+        <table id="mfTable">
+        </table>
+        <p id="list"></p>
+        <div id="rdsPopup">
+            <a href="DailySummary.html">Return to Daily Summary</a>
+        </div>
+    <html>
+
+
+<script>
+    writeList();
+function openSideMenu() {
+  document.getElementById("sideMenu").style.width = "50%";
+}
+
+function closeSideMenu() {
+  document.getElementById("sideMenu").style.width = "0";
+}
+
+function writeList() {
+    if(localStorage.getItem('MyFoodList')===null)
+        document.getElementById('list').textContent = "You haven't eaten anything yet!"
+    else {
+        document.getElementById('list').textContent = "     Food   Calories ";
+        document.getElementById('list').style.whiteSpace = "pre";
+        var foods = JSON.parse(localStorage.getItem('MyFoodList'));
+        for(var i=0;i<foods.length;i++)
+        {
+            addTableRow(i);
+        }
+    }
+}
+
+function addTableRow(num) {
+    var foods = JSON.parse(localStorage.getItem('MyFoodList'));
+    var newRow = document.getElementById("mfTable").insertRow(0);
+    newRow.class = "mfTableRow";
+    var c1 = newRow.insertCell(0);
+    var c2  = newRow.insertCell(1);
+    var c3 = newRow.insertCell(2);
+    c1.innerHTML = foods[num].name;
+    c1.style.borderRadius = "10px 0 0 10px";
+    c2.innerHTML = foods[num].nutrition[0]/*+"cal"*/;
+    c2.style.borderRadius = "10px 10px 10px 10px";
+    if(foods[num].nutrition[0] < 200) {
+        c2.style.backgroundColor = "lightgreen";
+    }
+    else if(foods[num].nutrition[0] < 300) {
+        c2.style.backgroundColor = "yellow";
+    }
+    else if(foods[num].nutrition[0] < 400) {
+        c2.style.backgroundColor = "orange";
+    }
+    else {
+        c2.style.backgroundColor = "rgb(245,61,61)";
+    }
+    c3.innerHTML = "+".bold();
+    c3.style.fontSize = "8vw";
+    c3.style.paddingBottom = "1%";
+    c3.style.paddingLeft = "17%";
+    /*c3.style.backgroundColor = "green";*/
+    c3.style.color = "green";
+    c3.style.borderRadius = "0 10px 10px 0";
+    c3.onclick = function(){
+        reAddFood((foods.length-1)-newRow.rowIndex)};
+}
+
+function reAddFood(num) {
+    var foods = JSON.parse(localStorage.getItem('MyFoodList'));
+    localStorage.setItem('tF', JSON.stringify(foods[num]));
+    document.location.href = 'DailySummary.html';
+    document.getElementById("rdsPopup").style.visibility="visible";
+}
+
+</script>

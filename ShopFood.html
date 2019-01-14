@@ -1,0 +1,77 @@
+<!doctype html>
+<link rel="stylesheet" href="../html/shop.css">
+<html lang="en">
+
+<html>
+<body>
+    <p id="awayBs">
+
+        <a href="DailySummary.html"
+            onclick=closeFoodMenu()>
+           < Go Back
+        </a>
+
+        <a href="../index.html">
+            Log Out
+        </a>
+    </p>
+
+    <div id="youAreHere"
+        onclick=openFoodMenu()>
+        •
+    </div>
+    <div id="foodPopup">
+        <p id= "foodInfo">
+            food info
+        </p>
+        <div id="buttons">
+        <a id="gotFoodB"
+            href="DailySummary.html"
+            onclick="saveFood()">
+            Got it!
+        </a>
+        <a id="closebtn"
+            href="DailySummary.html"
+            onclick=closeFoodMenu()>
+            Cancel
+        </span>
+        </div>
+    </div>
+
+    <h2 id="text">The red dot marks the location of the food you selected in a grocery store, click on it to add it to your daily summary</h2>
+
+</body>
+
+<script>
+    var foodOfInterest=JSON.parse(localStorage.getItem('tF'));
+    positionUser();
+
+    var lLocations = [8, 16, 27, 35, 46, 54, 65, 73];
+    var tLocations = [15, 28];
+function openFoodMenu()
+{
+    document.getElementById("foodPopup").style.visibility = "visible";
+    document.getElementById("foodInfo").textContent = foodOfInterest.name + " is here!";
+}
+
+function closeFoodMenu()
+{
+    document.getElementById("foodPopup").style.visibility = "hidden";
+    localStorage.removeItem('tF');
+}
+
+function positionUser()
+{
+    var lLocations = [7, 14, 26, 33, 45, 52, 64, 71];
+    var tLocations = [11, 24];
+    document.getElementById("youAreHere").style.left = lLocations[~~(Math.random()*8)]+"%";
+    document.getElementById("youAreHere").style.top = tLocations[~~(Math.random()*2)]+"%";
+}
+
+function saveFood()
+{
+    localStorage.setItem('nF', "food");
+}
+
+</script>
+</html>

@@ -1,0 +1,168 @@
+<!doctype html>
+<link rel="stylesheet" href="../html/nutrition_plan.css">
+
+<html lang="en">
+
+<html>
+  <body>
+      <div id="sideMenu" class="sideMenu">
+          <a class="closeb" onclick="closeSideMenu()"><img src='../images/baseline_menu_black_48dp.png'></a>
+          <a href="MyProfile.html">My Profile</a>
+          <a href="DailySummary.html">Daily Summary</a>
+          <a href="PersonalizedPlan.html">Nutrition Plan</a>
+          <a href="MyFood.html">My Food</a>
+          <a id="logoutb" href="../index.html">log out</a>
+      </div>
+      <button id="sideMenuOpen" onclick=openSideMenu()> <img src='../images/baseline_menu_black_48dp.png'> </button>
+
+    <h1 id="plan"> Nutrition Plan </h1>
+
+    <div class="content">
+
+        <div class="nutrition_list" id="calories">
+          <form name="cal" oninput="">
+            Calories
+            <label for="cal" class="lab"> cal </label>
+            <output name="total_cal"> 2000
+          </form>
+        </div>
+
+        <div class="nutrition_list" id="carbohydrates">
+          <form name="calbot" oninput="remaining.value = parseInt(cal_take() * carbohydrate.value/100/4)">
+            Carbohydrate
+            <input name="per" id="carbohydrate">
+            <label class="per"> % </label>
+            <label for="g" class="lab"> g </label>
+            <output name="remaining"> 100
+          </form>
+        </div>
+
+        <div class="nutrition_list" id="fat">
+          <form name="fat" oninput="remaining.value = parseInt(cal_take() * fat.value/100/9)">
+            Fat
+            <input name="per" id="fat">
+            <label class="per"> % </label>
+            <label for="g" class="lab"> g </label>
+            <output name="remaining"> 200
+          </form>
+        </div>
+
+        <div class="nutrition_list" id="protein">
+          <form name="pro" oninput="remaining.value = parseInt(cal_take() * protein.value/100/4)">
+            Protein
+            <input name="per" id="protein">
+            <label class="per"> % </label>
+            <label for="g" class="lab"> g </label>
+            <output name="remaining"> 40
+          </form>
+        </div>
+
+        <div class="nutrition_list" id="fiber">
+          <form name="fib" oninput="">
+            Fiber
+            <label for="g" class="lab"> g </label>
+            <output name="remaining"> 30
+          </form>
+        </div>
+
+        <div class="nutrition_list" id="suger">
+          <form name="sug" oninput="">
+            Sugar
+            <label for="g" class="lab"> g </label>
+            <output name="remaining"> 25
+          </form>
+        </div>
+
+        <div class="nutrition_list" id="sodium">
+          <form name="sod" oninput="">
+            Sodium
+            <label for="mg" class="lab"> mg </label>
+            <output name="remaining"> 2300
+          </form>
+        </div>
+      <form name="input_form" onsubmit="return validate()">
+        <button class="buttons" onclick="setPlan();location.href='./DailySummary.html'" id="submit" type="submit"> Customize Macronutrient Ratio </button>
+        <button class="buttons" onclick="location.href='./DailySummary.html'" id="cancel"> Cancel </button>
+    </form>
+    </div>
+  </body>
+</html>
+
+<script>
+if(localStorage.getItem('nutritionPlan')===null) {
+  var nutPlan = JSON.parse(localStorage.getItem('nutritionPlanDefault'));
+}
+else {
+  var nutPlan = JSON.parse(localStorage.getItem('nutritionPlan'));
+  // console.log(nutPlan);
+}
+
+setUpPlan();
+
+function cal_take() {
+  return document.forms["cal"]["total_cal"].value;
+}
+
+function setUpPlan() {
+  if(nutPlan===null) {}
+  else {
+    if (localStorage.getItem('gen')==='male') {
+      document.forms["cal"]["total_cal"].value = 2200
+    }
+    else {
+      document.forms["cal"]["total_cal"].value = 1800
+    }
+    document.forms["calbot"]["remaining"].value = nutPlan[1]
+    document.forms["fat"]["remaining"].value = nutPlan[2]
+    document.forms["pro"]["remaining"].value = nutPlan[3]
+    // console.log(nutPlan);
+  }
+}
+
+function validate() {
+  if (!(parseInt(document.forms["calbot"]["per"].value) + parseInt(document.forms["fat"]["per"].value) +
+      parseInt(document.forms["pro"]["per"].value))) {
+      alert("All macro percentages must be filled in.");
+      return true;
+  }
+  else if (parseInt(document.forms["calbot"]["per"].value) + parseInt(document.forms["fat"]["per"].value) +
+      parseInt(document.forms["pro"]["per"].value) !== 100) {
+      alert("The sum of macro percentages must be 100.");
+      return true;
+  }
+  else {
+    return false;
+  }
+}
+
+function setPlan() {
+  var cals = document.forms["cal"]["total_cal"].value;
+  var carbot = document.forms["calbot"]["remaining"].value;
+  var fat = document.forms["fat"]["remaining"].value;
+  var pro = document.forms["pro"]["remaining"].value;
+  var fib = parseInt(document.forms["fib"]["remaining"].value);
+  var sug = parseInt(document.forms["sug"]["remaining"].value);
+  var sod = parseInt(document.forms["sod"]["remaining"].value);
+
+
+  if(nutPlan===null) {}
+  else {
+    nutPlan[0] = cals;
+    nutPlan[1] = carbot;
+    nutPlan[2] = fat;
+    nutPlan[3] = pro;
+    nutPlan[4] = fib;
+    nutPlan[5] = sug;
+    nutPlan[6] = sod;
+    localStorage.setItem('nutritionPlan', JSON.stringify(nutPlan));
+  }
+}
+
+function openSideMenu() {
+  document.getElementById("sideMenu").style.width = "50%";
+}
+
+function closeSideMenu() {
+  document.getElementById("sideMenu").style.width = "0";
+}
+</script>

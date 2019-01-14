@@ -1,0 +1,124 @@
+<!doctype html>
+<link rel="stylesheet" href="../html/profile.css">
+<html lang="en">
+
+<html>
+      <body>
+        <div id="sideMenu" class="sideMenu">
+            <a class="closeb" onclick="closeSideMenu()"><img src='../images/baseline_menu_black_48dp.png'></a>
+            <a href="MyProfile.html">My Profile</a>
+            <a href="DailySummary.html">Daily Summary</a>
+            <a href="PersonalizedPlan.html">Nutrition Plan</a>
+            <a href="MyFood.html">My Food</a>
+            <a id="logoutb" href="../index.html">log out</a>
+        </div>
+        <button id="sideMenuOpen" onclick=openSideMenu()> <img src='../images/baseline_menu_black_48dp.png'> </button>
+        <div class="container">
+          <form name="input_form">
+            <fieldset disabled>
+              <div class="text">
+                <label for="name"> <a>Name</a> </label>
+                <input name="name" class="field">
+              </div>
+
+              <h1 id="title"> My Profile </h1>
+
+              <div class="text">
+                <label for="gender"> <a>Gender</a> </label>
+                <select class="field" id="gender">
+                  <option value="female">Female</option>
+                  <option value="male">Male</option>
+                </select>
+              </div>
+
+              <div class="text">
+                <label for="age" type="number"> <a>Age</a> </label>
+                <input name="age" class="field">
+              </div>
+
+              <div class="text">
+                <label for="height" type="number"> <a>Height(cm)</a> </label>
+                <input name="height" class="field">
+              </div>
+
+              <div class="text">
+                <label for="weight" type="number"> <a>Weight(kg)</a> </label>
+                <input name="weight" class="field">
+              </div>
+
+              <div class="text">
+                <div class="choice">
+                  <a>Goal</a>
+                  <input name="options" onclick="clearChecks('0')" type="checkbox" value="gain_w"
+                  class="checks">
+                  <label for="gain_w"> Gain Weight </label> <br>
+                </div>
+
+                <div class="choice">
+                  <input name="options" onclick="clearChecks('1')"
+                  type="checkbox" value="lose_w"
+                  class="checks">
+                  <label for="lose_w"> Lose Weight </label> <br>
+                </div>
+
+                <div class="choice">
+                  <input name="options"
+                  onclick="clearChecks('2')"
+                  type="checkbox" value="keep_f"
+                  class="checks">
+                  <label for="keep_f"> Keep Fit </label> <br>
+                </div>
+
+              </div>
+            </fieldset>
+
+          </form>
+          <button onclick="location.href='./MyProfile_Edit.html'" class="button" id="submit"> Edit </button>
+        </div>
+
+      </body>
+</html>
+
+<script>
+var nutPlan = JSON.parse(localStorage.getItem('nutritionPlan'));
+setUpFields();
+function openSideMenu() {
+  document.getElementById("sideMenu").style.width = "50%";
+}
+
+function closeSideMenu() {
+  document.getElementById("sideMenu").style.width = "0";
+}
+
+function setUpFields() {
+  var boxes = document.getElementsByClassName("field");
+  var chks = document.getElementsByClassName("checks");
+  if(localStorage.getItem('uN')===null) {}
+  else {
+    boxes[0].value = localStorage.getItem('uN');
+    boxes[1].value = localStorage.getItem('gen');
+    boxes[2].value = localStorage.getItem('age');
+    boxes[3].value = localStorage.getItem('hgt');
+    boxes[4].value = localStorage.getItem('wgt');
+  }
+
+  if(localStorage.getItem('dietOption')===null){}
+  else {
+    if(localStorage.getItem('dietOption')=="gW")
+      chks[0].checked = true;
+    if(localStorage.getItem('dietOption')=="lW")
+      chks[1].checked = true;
+    if(localStorage.getItem('dietOption')=="kF")
+      chks[2].checked = true;
+  }
+}
+
+function clearChecks(ignore)
+{
+  var chks = document.getElementsByClassName("checks");
+  for(var i=0; i<chks.length;i++)
+    chks[i].checked = false;
+    chks[ignore].checked = true;
+}
+
+</script>
